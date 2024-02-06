@@ -4,7 +4,7 @@ import NotificationService.meesho.constants.KafkaConstants;
 import NotificationService.meesho.dao.entities.sql.SmsRequest;
 import NotificationService.meesho.services.elasticsearch.impl.ElasticsearchSmsRequestsServiceImpl;
 import NotificationService.meesho.services.redis.transformers.BlackListedTransformer;
-import NotificationService.meesho.transformers.SmsTransformer;
+import NotificationService.meesho.components.SendSmsComponent;
 import NotificationService.meesho.services.smsrequest.SmsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class KafkaListener {
         if (!isBlacklisted) {
             try {
                 smsRequest = saveSmsRequest(smsRequest, isBlacklisted, "", "");
-                SmsTransformer.sendSms(smsRequest);
+                SendSmsComponent.sendSms(smsRequest);
             } catch (Exception e) {
                 smsRequest = saveSmsRequest(smsRequest, isBlacklisted, KafkaConstants.INTERNAL_SERVER_ERROR, KafkaConstants.MESSAGE_SENDING_FAILED);
                 KafkaConstants.ERROR = false;

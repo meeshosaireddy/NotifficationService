@@ -5,6 +5,7 @@ import NotificationService.meesho.dao.entities.sql.BlackListPhoneNumber;
 import NotificationService.meesho.services.blacklist.impl.BlackListedServiceImpl;
 import NotificationService.meesho.services.redis.RedisService;
 import NotificationService.meesho.services.redis.helpers.RedisHelper;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class RedisServiceImpl implements RedisService {
     private RedisHelper redisHelper;
     @Autowired
     private BlackListedServiceImpl blackListedServiceImpl;
+    @Autowired
+    private CacheManager cacheManager;
     String key = RedisConstants.KEY;
 
     @Override
@@ -30,6 +33,7 @@ public class RedisServiceImpl implements RedisService {
        BlackListPhoneNumber blackListPhoneNumber = new BlackListPhoneNumber();
        blackListPhoneNumber.setPhoneNumber(phoneNumber);
        blackListedServiceImpl.addBlackListPhoneNumber(blackListPhoneNumber);
+       cacheManager.getCache(RedisConstants.VALUE).evict(key);
 
     }
     @Override
@@ -37,6 +41,7 @@ public class RedisServiceImpl implements RedisService {
     public void removeBlacklistNumber(String phoneNumber) {
         redisHelper.removeBlacklistedPhoneNumber(phoneNumber);
         blackListedServiceImpl.removePhoneNumberFromBlackList(phoneNumber);
+        cacheManager.getCache(RedisConstants.VALUE).evict(key);
     }
 
 

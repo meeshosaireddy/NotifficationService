@@ -1,4 +1,4 @@
-package NotificationService.meesho.transformers;
+package NotificationService.meesho.components;
 
 import NotificationService.meesho.constants.KafkaConstants;
 import NotificationService.meesho.controllers.redis.RedisController;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class SmsTransformer {
+public class SendSmsComponent {
     private static final Logger logger = LoggerFactory.getLogger(RedisController.class);
     public static void sendSms(SmsRequest smsRequest) {
         try {
