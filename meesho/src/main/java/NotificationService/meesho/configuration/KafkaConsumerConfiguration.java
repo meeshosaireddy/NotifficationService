@@ -19,14 +19,11 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfiguration {
 
-    private final String bootstrapServers = KafkaConstants.SERVER;
-    private final String groupId = KafkaConstants.GROUP_ID;
-
     @Bean
     public ConsumerFactory<String, Integer> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.SERVER);
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConstants.GROUP_ID);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class.getName());
         return new DefaultKafkaConsumerFactory<>(configProps);

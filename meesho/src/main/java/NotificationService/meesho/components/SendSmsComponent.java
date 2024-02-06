@@ -1,7 +1,7 @@
 package NotificationService.meesho.components;
 
 import NotificationService.meesho.constants.KafkaConstants;
-import NotificationService.meesho.controllers.redis.RedisController;
+import NotificationService.meesho.controllers.blacklist.BlacklistPhoneNumberController;
 import NotificationService.meesho.dao.entities.models.SmsMessageToPhoneNumber;
 import NotificationService.meesho.dao.entities.sql.SmsRequest;
 import NotificationService.meesho.transformers.SmsRequestsToMessageTransformer;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class SendSmsComponent {
-    private static final Logger logger = LoggerFactory.getLogger(RedisController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlacklistPhoneNumberController.class);
     public static void sendSms(SmsRequest smsRequest) {
         try {
             RestTemplate restTemplate = new RestTemplate();

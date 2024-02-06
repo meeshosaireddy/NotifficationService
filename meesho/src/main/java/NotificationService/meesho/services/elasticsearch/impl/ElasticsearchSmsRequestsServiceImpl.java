@@ -1,6 +1,6 @@
 package NotificationService.meesho.services.elasticsearch.impl;
 
-import NotificationService.meesho.controllers.redis.RedisController;
+import NotificationService.meesho.controllers.blacklist.BlacklistPhoneNumberController;
 import NotificationService.meesho.dao.entities.sql.SmsRequest;
 import NotificationService.meesho.dao.entities.sql.SmsRequestsDocument;
 import NotificationService.meesho.services.elasticsearch.ElasticsearchSmsRequestsService;
@@ -22,7 +22,7 @@ public class ElasticsearchSmsRequestsServiceImpl implements ElasticsearchSmsRequ
 
     @Autowired
     ElasticSearchSmsRequestHelper elasticSearchSmsRequestHelper;
-    private static final Logger logger = LoggerFactory.getLogger(RedisController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlacklistPhoneNumberController.class);
     @Override
     public void indexSmsRequest(SmsRequest smsRequest) {
         SmsRequestsDocument document = SmsRequestDocumentMapper.mapper.convertToDocument(smsRequest);
