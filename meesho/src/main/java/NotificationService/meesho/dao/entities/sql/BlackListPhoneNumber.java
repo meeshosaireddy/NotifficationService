@@ -19,6 +19,5 @@ public class BlackListPhoneNumber {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    // Default constructor is necessary for JPA
 
 }

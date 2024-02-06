@@ -22,42 +22,36 @@ public class RedisServiceImpl implements RedisService {
     private RedisHelper redisHelper;
     @Autowired
     private BlackListedServiceImpl blackListedServiceImpl;
-    @Autowired
-    private CacheManager cacheManager;
     String key = RedisConstants.KEY;
 
     @Override
-    @CacheEvict(value = RedisConstants.VALUE, allEntries = true)
     public void addBlacklistNumber(String phoneNumber) {
-       redisHelper.addBlacklistedPhoneNumber(phoneNumber);
-       BlackListPhoneNumber blackListPhoneNumber = new BlackListPhoneNumber();
-       blackListPhoneNumber.setPhoneNumber(phoneNumber);
-       blackListedServiceImpl.addBlackListPhoneNumber(blackListPhoneNumber);
-       cacheManager.getCache(RedisConstants.VALUE).evict(key);
-
+        redisHelper.addBlacklistedPhoneNumber(phoneNumber);
+        BlackListPhoneNumber blackListPhoneNumber = new BlackListPhoneNumber();
+        blackListPhoneNumber.setPhoneNumber(phoneNumber);
+        blackListedServiceImpl.addBlackListPhoneNumber(blackListPhoneNumber);
     }
+
     @Override
-    @CacheEvict(value = RedisConstants.VALUE, allEntries = true)
     public void removeBlacklistNumber(String phoneNumber) {
         redisHelper.removeBlacklistedPhoneNumber(phoneNumber);
         blackListedServiceImpl.removePhoneNumberFromBlackList(phoneNumber);
-        cacheManager.getCache(RedisConstants.VALUE).evict(key);
     }
 
 
     @Override
-    @Cacheable(value = RedisConstants.VALUE)
     public boolean checkBlacklistNumber(String phoneNumber) {
-       if (!redisHelper.checkPhoneNumberBlacklisted(phoneNumber)){
+        if (!redisHelper.checkPhoneNumberBlacklisted(phoneNumber)) {
 
-           if (!blackListedServiceImpl.isPhoneNumberBlacklisted(phoneNumber)){
-               addBlacklistNumber(phoneNumber);
-               return true;
-           }
-           return false;
-       }
-       return true;
+            if (!blackListedServiceImpl.isPhoneNumberBlacklisted(phoneNumber)) {
+                addBlacklistNumber(phoneNumber);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
+
     @Override
     @Cacheable(value = RedisConstants.VALUE)
     public List<String> getBlacklistedPhoneNumbers() {
@@ -65,8 +59,8 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void checkAndAddBlacklistedPhoneNumber(String phoneNumber){
+    public void checkAndAddBlacklistedPhoneNumber(String phoneNumber) {
         if (!checkBlacklistNumber(phoneNumber))
-             addBlacklistNumber(phoneNumber);
+            addBlacklistNumber(phoneNumber);
     }
 }

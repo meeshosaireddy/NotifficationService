@@ -1,5 +1,6 @@
 package NotificationService.meesho.controllers.redis;
 
+import NotificationService.meesho.services.blacklist.BlackListedService;
 import NotificationService.meesho.services.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class RedisController {
     @Autowired
     RedisService redisService;
     @Autowired
-    BlackListedServiceImpl blackListedServiceImpl;
+    BlackListedService blackListedService;
     @Autowired
     RedisHelper redisHelper;
     private static final Logger logger = LoggerFactory.getLogger(RedisController.class);
@@ -76,7 +77,6 @@ public class RedisController {
         return ResponseEntity.ok(SuccessResponseTransformer.redisSuccessResponse(RedisConstants.SUCCESS_BLACKLISTED));
 
     }
-
     @GetMapping(RedisAPIConstants.IS_BLACKLISTED)
     public ResponseEntity<?> isPhoneNumberBlacklisted(@RequestBody String phoneNumber) {
         return ResponseEntity.ok(redisService.checkBlacklistNumber(phoneNumber));

@@ -14,7 +14,7 @@ import org.elasticsearch.client.RestClientBuilder;
 public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
     private String hostname = ElasticSearchSmsRequestsConstants.HOST_NAME;
-    private int port = ElasticSearchSmsRequestsConstants.port;
+    private int port = ElasticSearchSmsRequestsConstants.PORT;
 
     @Override
     @Bean(name = ElasticSearchSmsRequestsConstants.ELASTIC_SEARCH_CLIENT)

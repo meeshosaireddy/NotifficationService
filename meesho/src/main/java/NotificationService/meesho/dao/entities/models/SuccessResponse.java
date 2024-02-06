@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SuccessResponse {
     private Data data;
-    
-   
-   @NoArgsConstructor
-   @AllArgsConstructor
-   @lombok.Data
+
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @lombok.Data
     public static class Data {
         private String requestId;
         private String comments;

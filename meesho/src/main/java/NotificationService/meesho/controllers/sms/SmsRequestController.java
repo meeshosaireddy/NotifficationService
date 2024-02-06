@@ -33,7 +33,7 @@ public class SmsRequestController {
     @PostMapping(SmsAPIConstants.SEND_SMS)
     public ResponseEntity<?> sendSms(@RequestBody UserMessage userMessage) {
         try {
-            if (!sendSmsValidator.usermessage(userMessage)) {
+            if (!sendSmsValidator.validateUserMessage(userMessage)) {
                 ErrorResponse errorResponse = ErrorResponseTransformer.errorResponse(ErrorConstants.INVALID_REQUEST, ErrorConstants.ALL_FIELDS_ARE_MANDATORY);
                 return ResponseEntity.status(400).body(errorResponse);
             }

@@ -2,7 +2,7 @@ package NotificationService.meesho.listeners;
 
 import NotificationService.meesho.constants.KafkaConstants;
 import NotificationService.meesho.dao.entities.sql.SmsRequest;
-import NotificationService.meesho.services.elasticsearch.impl.ElasticsearchSmsRequestsServiceImpl;
+import NotificationService.meesho.services.elasticsearch.ElasticsearchSmsRequestsService;
 import NotificationService.meesho.services.redis.transformers.BlackListedTransformer;
 import NotificationService.meesho.components.SendSmsComponent;
 import NotificationService.meesho.services.smsrequest.SmsRequestService;
@@ -16,7 +16,7 @@ public class KafkaListener {
     @Autowired
     private BlackListedTransformer blackListedTransformer;
     @Autowired
-    private ElasticsearchSmsRequestsServiceImpl elasticsearchSmsRequestsServiceImpl;
+    private ElasticsearchSmsRequestsService elasticsearchSmsRequestsService;
 
     @org.springframework.kafka.annotation.KafkaListener(topics = KafkaConstants.TOPICS, groupId = KafkaConstants.GROUP_ID)
     public void checkForBlacklisted(int requestId) {
@@ -33,7 +33,7 @@ public class KafkaListener {
         } else {
             smsRequest = saveSmsRequest(smsRequest, isBlacklisted, KafkaConstants.INTERNAL_SERVER_ERROR, KafkaConstants.BLACKLISTED_PHONE_NUMBER);
         }
-        elasticsearchSmsRequestsServiceImpl.indexSmsRequest(smsRequest);
+        elasticsearchSmsRequestsService.indexSmsRequest(smsRequest);
         KafkaConstants.BLACKLISTED = isBlacklisted ? 2 : 1;
 
     }

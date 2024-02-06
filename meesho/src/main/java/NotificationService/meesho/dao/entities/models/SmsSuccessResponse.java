@@ -16,7 +16,7 @@ public class SmsSuccessResponse {
     @AllArgsConstructor
     @lombok.Data
     public static class Data {
-       private SmsRequest smsRequest;
+        private SmsRequest smsRequest;
     }
 
 }

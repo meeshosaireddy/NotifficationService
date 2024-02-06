@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendSmsValidator {
 
-    public boolean usermessage(UserMessage userMessage){
+    public boolean validateUserMessage(UserMessage userMessage){
         return userMessage.getPhoneNumber() != null && userMessage.getMessage() != null;
     }
 }
