@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-//@RequiredArgsConstructor(onConstructor_ = @Autowired )
 @Component
 public class SmsRequestsHelper {
     @Autowired

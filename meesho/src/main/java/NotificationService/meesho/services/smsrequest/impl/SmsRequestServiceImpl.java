@@ -18,7 +18,7 @@ public class SmsRequestServiceImpl implements SmsRequestService {
     private KafkaService kafkaService;
 
     @Override
-    public void sendSmsRequest(SmsRequest smsRequest) {
+    public void saveSmsRequest(SmsRequest smsRequest) {
         smsRequestsHelper.saveSmsRequest(smsRequest);
     }
 
@@ -34,11 +34,9 @@ public class SmsRequestServiceImpl implements SmsRequestService {
     }
 
     @Override
-    public void sendSmsRequestToKafka(SmsRequest smsRequest) {
-        sendSmsRequest(smsRequest);
+    public void sendSms(SmsRequest smsRequest) {
+        saveSmsRequest(smsRequest);
         int requestId = (smsRequest.getId());
         kafkaService.sendTopic(requestId);
     }
-
-
 }

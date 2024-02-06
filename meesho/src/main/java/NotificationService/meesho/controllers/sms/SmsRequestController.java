@@ -38,7 +38,7 @@ public class SmsRequestController {
                 return ResponseEntity.status(400).body(errorResponse);
             }
             SmsRequest smsRequest = smsRequestTransformer.getSmsRequest(userMessage, "0");
-            smsRequestService.sendSmsRequestToKafka(smsRequest);
+            smsRequestService.sendSms(smsRequest);
             while (KafkaConstants.BLACKLISTED == 0) ;
             if (KafkaConstants.ERROR && (KafkaConstants.BLACKLISTED == 1)) {
                 SuccessResponse successResponse = new SuccessResponse(new SuccessResponse.Data(String.valueOf(smsRequest.getId()), SmsConstants.SMS_SUCCESS));
@@ -49,18 +49,16 @@ public class SmsRequestController {
                 KafkaConstants.BLACKLISTED = 0;
                 return ResponseEntity.status(500).body(errorResponse);
             }
-
         } catch (Exception e) {
             ErrorResponse errorResponse = ErrorResponseTransformer.errorResponse(SmsConstants.INTERNAL_SERVER_ERROR, SmsConstants.SENDING_SMS_FAILED);
             KafkaConstants.BLACKLISTED = 0;
             return ResponseEntity.status(500).body(errorResponse);
         }
-
     }
 
     @GetMapping(SmsAPIConstants.GET_SMS)
     public ResponseEntity<?> getSmsRequestDetails(@PathVariable int requestId) {
-        SmsRequest smsRequest = null;
+        SmsRequest smsRequest;
         try {
             smsRequest = smsRequestService.getSmsRequestById(requestId);
             if (smsRequest == null) {

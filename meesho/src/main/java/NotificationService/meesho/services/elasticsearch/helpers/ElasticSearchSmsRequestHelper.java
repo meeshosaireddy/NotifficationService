@@ -1,7 +1,6 @@
 package NotificationService.meesho.services.elasticsearch.helpers;
 
 import NotificationService.meesho.constants.ElasticSearchSmsRequestsConstants;
-import NotificationService.meesho.controllers.redis.RedisController;
 import NotificationService.meesho.dao.entities.sql.SmsRequestsDocument;
 import NotificationService.meesho.services.elasticsearch.transformers.ElasticSearchSmsRequestTransformer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -36,6 +35,7 @@ public class ElasticSearchSmsRequestHelper {
     @Autowired
     @Qualifier(ElasticSearchSmsRequestsConstants.ELASTIC_SEARCH_CLIENT)
     private RestHighLevelClient elasticsearchClient;
+
     @Autowired
     private ElasticSearchSmsRequestTransformer elasticSearchSmsRequestTransformer;
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchSmsRequestHelper.class);
@@ -47,6 +47,7 @@ public class ElasticSearchSmsRequestHelper {
             indexRequest.source(jsonDocument, XContentType.JSON);
             elasticsearchClient.index(indexRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
+            //TODO: change to log message
             System.out.println(e);
         }
     }
@@ -54,6 +55,7 @@ public class ElasticSearchSmsRequestHelper {
     public List<SmsRequestsDocument> getSmsMessagesByPhoneNumberAndTimeRange(
             String phoneNumber, LocalDateTime startTime, LocalDateTime endTime, int page, int size) {
         try {
+            //TODO: change variable name
             int from = page * size;
             SearchSourceBuilder sourceBuilder = buildSmsMessagesQuery(phoneNumber, startTime, endTime);
             sourceBuilder.from(from);
@@ -133,8 +135,8 @@ public class ElasticSearchSmsRequestHelper {
                 SmsRequestsDocument document = objectMapper.readValue(hit.getSourceAsString(), SmsRequestsDocument.class);
                 documents.add(document);
             } catch (IOException e) {
-                logger.error("Error converting JSON to object: " + e.getMessage());
-                logger.error("Failed JSON data: " + hit.getSourceAsString());
+                logger.error("Error converting JSON to object: {}", e.getMessage());
+                logger.error("Failed JSON data: {} ", hit.getSourceAsString());
             }
         }
         return documents;
